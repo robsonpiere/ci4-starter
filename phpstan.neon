@@ -1,0 +1,19 @@
+parameters:
+    level: 5
+    paths:
+      - app
+    tmpDir: writable/cache/phpstan
+    treatPhpDocTypesAsCertain: false
+    scanDirectories:
+      - vendor/codeigniter4/framework
+    excludePaths:
+      analyse:
+        - app/Config/*
+        - app/Views/errors/*
+    bootstrapFiles:
+      - vendor/codeigniter4/framework/system/Test/bootstrap.php
+    dynamicConstantNames:
+      - APP_NAMESPACE
+      - CI_DEBUG
+      - ENVIRONMENT
+      - SODIUM_LIBRARY_VERSION

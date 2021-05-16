@@ -1,0 +1,72 @@
+name: Testes
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  testes:
+    runs-on: ubuntu-20.04
+    env:
+      DB_TEST_HOST : "127.0.0.1"
+      DB_TEST_USER : "root"
+      DB_TEST_PASS: "fake_pass"
+      DB_TEST_DATABASE: "teste_database"
+    strategy:
+      matrix:
+        php-versions: ['7.3','7.4','8.0']
+    services:
+      mariadb:
+        image: mariadb:10.3
+        env:
+          MYSQL_DATABASE: "database_test"
+          MYSQL_ROOT_PASSWORD: "fake_pass"
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+          --name banco
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+            php-version: ${{ matrix.php-versions }}
+            coverage: pcov
+            tools: composer:v2
+            extensions: curl, fileinfo, intl, mbstring, sqlite3, mysqli
+      - name: Obtém cache do composer
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer deps
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Instala dependências
+        id: deps
+        run: composer install --classmap-authoritative --no-progress --optimize-autoloader
+      - name: Test with PHPUNIT
+        run: composer test
+      - name: Cobertura de testes
+        uses: slavcodev/coverage-monitor-action@1.2.0
+        if: github.event_name == 'pull_request'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          clover_file: "build/logs/clover.xml"
+          threshold_alert: 30
+          threshold_warning: 40
+          comment_mode: insert
+      - name: Executa PHPMD
+        run: composer phpmd
+      - name: Executa PHPCS
+        run: composer phpcs
+      - name: Executa PHPSTAN
+        run: composer phpstan

@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: composer
+    directory: /
+    open-pull-requests-limit: 5
+    rebase-strategy: auto
+    target-branch: develop
+    labels:
+      - "composer"
+      - "dependências"
+    schedule:
+      timezone: "America/Sao_Paulo"
+      time: "00:00"
+      interval: weekly
+      day: monday
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      timezone: "America/Sao_Paulo"
+      time: "00:00"
+      interval: weekly
+      day: monday
+    labels:
+      - "actions"
+      - "dependências"

@@ -1,0 +1,22 @@
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="PHP_CodeSniffer" xsi:noNamespaceSchemaLocation="phpcs.xsd">
+    <description>Regras para o projeto</description>
+
+    <!-- pastas padrão -->
+    <file>app</file>
+
+    <arg name="colors"/>
+    <exclude-pattern>app/Config/*</exclude-pattern>
+    <exclude-pattern>app/Language/*</exclude-pattern>
+
+    <!-- importando standart -->
+    <rule ref="PSR12"></rule>
+
+    <rule ref="Internal.NoCodeFound">
+        <exclude-pattern>app/Views/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Generic.Files.LineLength.TooLong">
+        <exclude-pattern>app/Views/*</exclude-pattern>
+    </rule>
+
+</ruleset>
