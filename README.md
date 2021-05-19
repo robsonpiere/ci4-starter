@@ -45,7 +45,8 @@ Um template  Codeigniter 4 com algumas ferramentas para qualidade de código, de
 
 :heavy_check_mark: Template inicial com Codeigniter 4;\
 :heavy_check_mark: Configuração Inicial com Github Actions para seu CI;\
-:heavy_check_mark: Configuração inicial do Dependabot para atualização das dependências do projeto;
+:heavy_check_mark: Configuração inicial do Dependabot para atualização das dependências do projeto; \
+:heavy_check_mark: Adicionadas Traduções e configuração incial definida como pt-BR
 
 ## :rocket: Tecnologias ##
 
